@@ -2,30 +2,25 @@
 
 # 24 Strategy Skills for Claude
 
-**A consulting operating system for Claude, built on real McKinsey practice structure — not a generic prompting template.**
-
-[![Skills](https://img.shields.io/badge/skills-24-B3221A)](#available-skills)
-[![Domains](https://img.shields.io/badge/domains-6-1E3A8A)](#skill-categories)
-[![Calculators](https://img.shields.io/badge/bundled%20calculators-13-0F7A46)](#calculators)
-[![License: MIT](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
+**A consulting operating system for Claude, built on real McKinsey practice structure, not a generic prompting template.**
 
 <img src="assets/overview.png" alt="24 Strategy Skills for Claude — overview" width="720">
 
 </div>
 
-24 [Agent Skills](https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview) for Claude — one folder per skill, each a `SKILL.md` plus, for the quantitative ones, a bundled Python calculator. Built around McKinsey's actual documented problem-solving method (define the problem, build a MECE issue tree, form hypotheses, prioritize, build a workplan, analyze, synthesize, communicate) and their real practice-area names, instead of a generic "diagnose → communicate" template.
+24 [Agent Skills](https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview) for Claude, one folder per skill, each a `SKILL.md` plus, for the quantitative ones, a bundled Python calculator. Built around McKinsey's actual documented problem-solving method (define the problem, build a MECE issue tree, form hypotheses, prioritize, build a workplan, analyze, synthesize, communicate) and their real practice-area names, instead of a generic "diagnose → communicate" template.
 
-**13 of the 24 skills ship a tested Python calculator** — NPV/IRR, LTV:CAC, TAM/SAM/SOM, Van Westendorp pricing, spans and layers, GE-McKinsey 9-box, decision-tree expected value, risk scoring, BATNA/ZOPA, RICE, and synergy NPV — so the number-heavy skills compute a real answer instead of describing a method and leaving the math to you.
+**13 of the 24 skills ship a tested Python calculator** - NPV/IRR, LTV:CAC, TAM/SAM/SOM, Van Westendorp pricing, spans and layers, GE-McKinsey 9-box, decision-tree expected value, risk scoring, BATNA/ZOPA, RICE, and synergy NPV, so the number-heavy skills compute a real answer instead of describing a method and leaving the math to you.
 
 **Contributions welcome!** Found a gap, a calculator bug, or have a skill to add? See [Contributing](#contributing).
 
 ## What are Skills?
 
-Skills are markdown files that give Claude specialized knowledge and a repeatable method for a specific task. When Claude has access to these, it recognizes when a conversation matches a skill's `description` and applies that skill's method automatically — no need to invoke it by name, though you can (`Use the market-mapping skill to size this opportunity`).
+Skills are markdown files that give Claude specialized knowledge and a repeatable method for a specific task. When Claude has access to these, it recognizes when a conversation matches a skill's `description` and applies that skill's method automatically, no need to invoke it by name, though you can (`Use the market-mapping skill to size this opportunity`).
 
 ## How the skills fit together
 
-`situation-assessment` and `assumption-audit` sit at the start of any real engagement. `full-potential-diagnostic` and `business-case-builder` size what a decision is worth in dollars. `value-realization` is the only skill in the pack that looks backward — it closes the loop by checking what the projection-producing skills predicted against what actually happened.
+`situation-assessment` and `assumption-audit` sit at the start of any real engagement. `full-potential-diagnostic` and `business-case-builder` size what a decision is worth in dollars. `value-realization` is the only skill in the pack that looks backward, it closes the loop by checking what the projection-producing skills predicted against what actually happened.
 
 ```
                     ┌───────────────────────────────────────┐
@@ -57,7 +52,7 @@ Skills are markdown files that give Claude specialized knowledge and a repeatabl
 
 | Skill | Description |
 |---|---|
-| [`100-day-plan`](skills/100-day-plan) | The real post-close/new-leader sequence — listen, decide, launch, with quick wins built in |
+| [`100-day-plan`](skills/100-day-plan) | The real post-close/new-leader sequence, listen, decide, launch, with quick wins built in |
 | [`assumption-audit`](skills/assumption-audit) | Surfaces load-bearing assumptions, scores evidence quality, designs falsification tests |
 | [`business-case-builder`](skills/business-case-builder) 🧮 | Driver-based NPV/IRR/payback with a real sensitivity grid |
 | [`capital-reallocation-review`](skills/capital-reallocation-review) 🧮 | GE-McKinsey 9-box scoring plus measured capital-reallocation intensity |
@@ -112,7 +107,7 @@ Making the work survive the meeting.
 
 ## Calculators
 
-Every calculator was run against a worked test case while this pack was built — the numbers in each skill's **Example** section are real output, not invented illustrations. A few examples of what they catch that a prose-only skill can't:
+Every calculator was run against a worked test case while this pack was built, the numbers in each skill's **Example** section are real output, not invented illustrations. A few examples of what they catch that a prose-only skill can't:
 
 - `market-mapping/scripts/tam_sam_som.py` flags when a top-down and bottom-up market-size estimate disagree by more than 30%
 - `business-case-builder/scripts/npv_case.py` returns a full revenue × discount-rate NPV sensitivity grid, not a single point estimate
@@ -154,7 +149,7 @@ Every `SKILL.md` follows the same structure: **When to use → What it does → 
 Most "strategy skills for Claude" packs mirror the same six-phase consulting narrative with prose-only prompting frameworks and an identical topic list. This one:
 
 - Uses McKinsey's actual documented hypothesis-driven method and real practice-area names
-- Runs situation assessment and hypothesis-tree building as one skill instead of two overlapping ones — hypothesis on day one, facts that test it second
+- Runs situation assessment and hypothesis-tree building as one skill instead of two overlapping ones, hypothesis on day one, facts that test it second
 - Includes topics a typical strategy-skill pack skips entirely: full-potential diagnostics, 100-day plans, M&A synergy cases, spans-and-layers org design, unit economics health checks, and negotiation prep
 - Ships 13 tested Python calculators instead of zero
 - Closes the loop: `value-realization` checks the projections that `business-case-builder`, `full-potential-diagnostic`, and `synergy-case-builder` produce against what actually happened
@@ -165,7 +160,7 @@ Found a gap, a bug in a calculator, or a skill that overlaps with another? See [
 
 ## License
 
-[MIT](LICENSE) — use it, fork it, adapt it.
+[MIT](LICENSE) - use it, fork it, adapt it.
 
 ---
 
