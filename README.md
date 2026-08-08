@@ -4,8 +4,8 @@
 
 **A consulting operating system for Claude, built on real McKinsey practice structure — not a generic prompting template.**
 
-[![Skills](https://img.shields.io/badge/skills-24-B3221A)](#skill-index)
-[![Domains](https://img.shields.io/badge/domains-6-1E3A8A)](#domains)
+[![Skills](https://img.shields.io/badge/skills-24-B3221A)](#available-skills)
+[![Domains](https://img.shields.io/badge/domains-6-1E3A8A)](#skill-categories)
 [![Calculators](https://img.shields.io/badge/bundled%20calculators-13-0F7A46)](#calculators)
 [![License: MIT](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
 
@@ -13,95 +13,102 @@
 
 </div>
 
-## What this is
+24 [Agent Skills](https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview) for Claude — one folder per skill, each a `SKILL.md` plus, for the quantitative ones, a bundled Python calculator. Built around McKinsey's actual documented problem-solving method (define the problem, build a MECE issue tree, form hypotheses, prioritize, build a workplan, analyze, synthesize, communicate) and their real practice-area names, instead of a generic "diagnose → communicate" template.
 
-24 [Claude Skills](https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview), one folder per skill, organized into six domains that map to McKinsey's actual documented practice structure and their hypothesis-driven problem-solving method (define the problem, build a MECE issue tree, form hypotheses, prioritize, build a workplan, analyze, synthesize, communicate) instead of a generic "diagnose → communicate" template.
+**13 of the 24 skills ship a tested Python calculator** — NPV/IRR, LTV:CAC, TAM/SAM/SOM, Van Westendorp pricing, spans and layers, GE-McKinsey 9-box, decision-tree expected value, risk scoring, BATNA/ZOPA, RICE, and synergy NPV — so the number-heavy skills compute a real answer instead of describing a method and leaving the math to you.
 
-**13 of the 24 skills ship a bundled, tested Python calculator** — NPV/IRR, LTV:CAC, TAM/SAM/SOM, Van Westendorp pricing, spans and layers, GE-McKinsey 9-box, decision-tree expected value, risk scoring, BATNA/ZOPA, RICE, and synergy NPV — so the number-heavy skills compute a real answer instead of describing a method and leaving the math to you.
+**Contributions welcome!** Found a gap, a calculator bug, or have a skill to add? See [Contributing](#contributing).
 
-## Install
+## What are Skills?
 
-1. Download or clone this repo.
-2. In Claude, open **Settings → Skills → Add → Upload a skill**.
-3. Upload a skill's `SKILL.md` (or the whole skill folder, where supported). Repeat for each skill you want.
-4. Skills trigger automatically based on their `description` when your conversation matches — no need to invoke them by name, though you can (`Use the market-mapping skill to size...`).
+Skills are markdown files that give Claude specialized knowledge and a repeatable method for a specific task. When Claude has access to these, it recognizes when a conversation matches a skill's `description` and applies that skill's method automatically — no need to invoke it by name, though you can (`Use the market-mapping skill to size this opportunity`).
 
-Skills with a bundled calculator include a `scripts/` folder — Claude runs these directly when the skill triggers in an environment with code execution.
+## How the skills fit together
 
-## Domains
+`situation-assessment` and `assumption-audit` sit at the start of any real engagement. `full-potential-diagnostic` and `business-case-builder` size what a decision is worth in dollars. `value-realization` is the only skill in the pack that looks backward — it closes the loop by checking what the projection-producing skills predicted against what actually happened.
 
-| # | Domain | Skills | Focus |
-|---|--------|:---:|-------|
-| 01 | [Problem Definition](#01--problem-definition) | 4 | Before anyone touches a solution |
-| 02 | [Market & Competitive Analysis](#02--market--competitive-analysis) | 4 | Where the value actually sits |
-| 03 | [Strategy & Corporate Finance](#03--strategy--corporate-finance) | 4 | Where bets and capital get decided |
-| 04 | [Performance Transformation](#04--performance-transformation) | 4 | Turning strategy into delivered results |
-| 05 | [Risk & Value Capture](#05--risk--value-capture) | 4 | Before it launches, and after |
-| 06 | [Communication & Change](#06--communication--change) | 4 | Making the work survive the meeting |
+```
+                    ┌───────────────────────────────────────┐
+                    │         situation-assessment           │
+                    │   (hypothesis tree + fact base first)  │
+                    └───────────────────┬─────────────────────┘
+                                        │
+   ┌─────────────┬──────────────┬───────┼────────┬──────────────┬──────────────┐
+   ▼             ▼              ▼       ▼        ▼              ▼              ▼
+┌─────────┐ ┌──────────┐ ┌────────────┐ ┌──────────────┐ ┌───────────┐ ┌──────────────┐
+│Problem  │ │Market &  │ │Strategy &  │ │Performance   │ │Risk &     │ │Communication │
+│Def.     │ │Competitive│ │Corp Finance│ │Transformation│ │Value Cap. │ │& Change      │
+├─────────┤ ├──────────┤ ├────────────┤ ├──────────────┤ ├───────────┤ ├──────────────┤
+│growth-  │ │market-   │ │strategic-  │ │operating-    │ │war-gaming │ │stakeholder-  │
+│ barriers│ │ mapping  │ │ options    │ │ model-design │ │risk-      │ │ alignment    │
+│full-    │ │competitiv│ │pricing-    │ │spans-layers  │ │ mitigation│ │narrative-    │
+│ potential│ │e-intel   │ │ strategy   │ │initiative-   │ │synergy-   │ │ builder      │
+│         │ │customer- │ │business-   │ │ prioritizer  │ │ case      │ │decision-memo │
+│         │ │ segment  │ │ case       │ │100-day-plan  │ │value-     │ │negotiation-  │
+│         │ │unit-econ │ │capital-    │ │              │ │ realization│ │ prep         │
+│         │ │          │ │ realloc    │ │              │ │(checks →) │ │              │
+└─────────┘ └──────────┘ └─────┬──────┘ └──────┬───────┘ └─────┬─────┘ └──────────────┘
+                               │               │                │
+                               └───────────────┴────────────────┘
+                     value-realization checks these three against actuals
+```
 
----
+## Available Skills
 
-### 01 · Problem Definition
-*Builds the hypothesis tree first, tests it against a real fact base, then sizes what's at stake, before anyone touches a solution.*
-
-| Skill | Use when | Output |
-|---|---|---|
-| [`situation-assessment`](skills/01-problem-definition/situation-assessment) | You need the real baseline before choosing a direction | Hypothesis tree, workplan, fact base, momentum read |
-| [`growth-barriers`](skills/01-problem-definition/growth-barriers) | Growth stalled and teams are debating symptoms | The one binding constraint, sized |
-| [`assumption-audit`](skills/01-problem-definition/assumption-audit) | A plan rests on beliefs nobody has tested | Assumption register and falsification tests |
-| [`full-potential-diagnostic`](skills/01-problem-definition/full-potential-diagnostic) 🧮 | "There's room to improve" has no number attached | Dollar value at stake vs. top quartile |
-
-### 02 · Market & Competitive Analysis
-*Sizes the market, reads the customer, and models rivals by capability and incentive, not gut feel.*
-
-| Skill | Use when | Output |
-|---|---|---|
-| [`market-mapping`](skills/02-market-competitive-analysis/market-mapping) 🧮 | You need a market size you can defend | Triangulated TAM, SAM, SOM plus white space |
-| [`competitive-intel`](skills/02-market-competitive-analysis/competitive-intel) | You need to predict a rival's next move | Capability profile, pre-committed response |
-| [`customer-segmentation`](skills/02-market-competitive-analysis/customer-segmentation) | Personas do not predict buying behavior | Jobs-based segments ranked by fit |
-| [`unit-economics-health-check`](skills/02-market-competitive-analysis/unit-economics-health-check) 🧮 | LTV is calculated on a flat churn rate that never changes | Real LTV:CAC ratio and CAC payback period |
-
-### 03 · Strategy & Corporate Finance
-*McKinsey's own practice name. Turns options into real economics: NPV, pricing power, and where capital should actually go.*
-
-| Skill | Use when | Output |
-|---|---|---|
-| [`strategic-options`](skills/03-strategy-corporate-finance/strategic-options) | Only one option has ever been developed | Weighted option set, staged recommendation |
-| [`pricing-strategy`](skills/03-strategy-corporate-finance/pricing-strategy) 🧮 | Price is set by cost-plus guessing | Willingness-to-pay range, margin curve |
-| [`business-case-builder`](skills/03-strategy-corporate-finance/business-case-builder) 🧮 | A case needs real economics, not a hunch | NPV, IRR, and a sensitivity grid |
-| [`capital-reallocation-review`](skills/03-strategy-corporate-finance/capital-reallocation-review) 🧮 | Budget is last year's number plus a few percent | 9-box placement, reallocation plan |
-
-### 04 · Performance Transformation
-*The other real McKinsey practice name. Fixes decision rights and structure, then sequences delivery and the first 100 days.*
-
-| Skill | Use when | Output |
-|---|---|---|
-| [`operating-model-design`](skills/04-performance-transformation/operating-model-design) | Decisions are slow and nobody owns them | RAPID map, structure recommendation |
-| [`spans-layers-org-design`](skills/04-performance-transformation/spans-layers-org-design) 🧮 | The org feels top-heavy but nobody has priced it | Span of control by layer, cost of excess layers |
-| [`initiative-prioritizer`](skills/04-performance-transformation/initiative-prioritizer) 🧮 | Too many initiatives, not enough capacity | RICE-ranked roadmap, cost of delay flagged |
-| [`100-day-plan`](skills/04-performance-transformation/100-day-plan) | A new leader or deal needs an opening sequence | Listen, decide, launch plan with quick wins |
-
-### 05 · Risk & Value Capture
-*Stress tests the plan against reality before launch, then closes the loop with what actually happened after.*
-
-| Skill | Use when | Output |
-|---|---|---|
-| [`war-gaming`](skills/05-risk-value-capture/war-gaming) 🧮 | Competitor reaction is genuinely uncertain | Expected value by option, worst case flagged |
-| [`risk-mitigation`](skills/05-risk-value-capture/risk-mitigation) 🧮 | A risk list has no owners or scores | Likelihood, impact, and velocity matrix |
-| [`synergy-case-builder`](skills/05-risk-value-capture/synergy-case-builder) 🧮 | A deal case assumes synergies land instantly | Ramped synergy NPV, net of integration cost |
-| [`value-realization`](skills/05-risk-value-capture/value-realization) | A past case was never checked against what happened | Actual vs. plan by driver, cause of every gap |
-
-### 06 · Communication & Change
-*Pre-wires the room, sharpens the story, and turns a recommendation into a written decision someone actually signs.*
-
-| Skill | Use when | Output |
-|---|---|---|
-| [`stakeholder-alignment`](skills/06-communication-change/stakeholder-alignment) 🧮 | Support is counted by headcount, not power | Power-interest grid, coalition math |
-| [`narrative-builder`](skills/06-communication-change/narrative-builder) | The story needs to land in the first 60 seconds | Pyramid structure with SCR framing |
-| [`decision-memo`](skills/06-communication-change/decision-memo) | A recommendation never quite gets a yes or no | One-page memo with a stated deadline |
-| [`negotiation-prep`](skills/06-communication-change/negotiation-prep) 🧮 | Nobody has named a walk-away price before the room | Zone of possible agreement, recommended anchor |
+| Skill | Description |
+|---|---|
+| [`100-day-plan`](skills/100-day-plan) | The real post-close/new-leader sequence — listen, decide, launch, with quick wins built in |
+| [`assumption-audit`](skills/assumption-audit) | Surfaces load-bearing assumptions, scores evidence quality, designs falsification tests |
+| [`business-case-builder`](skills/business-case-builder) 🧮 | Driver-based NPV/IRR/payback with a real sensitivity grid |
+| [`capital-reallocation-review`](skills/capital-reallocation-review) 🧮 | GE-McKinsey 9-box scoring plus measured capital-reallocation intensity |
+| [`competitive-intel`](skills/competitive-intel) | Capability/incentive/constraint competitor modeling, pre-committed responses |
+| [`customer-segmentation`](skills/customer-segmentation) | Jobs-to-be-Done segmentation, attractiveness × right-to-win scoring |
+| [`decision-memo`](skills/decision-memo) | One-page Bezos-style decision memo engineered to force a yes/no |
+| [`full-potential-diagnostic`](skills/full-potential-diagnostic) 🧮 | Sizes the $ value-at-stake vs. top-quartile benchmark, metric by metric |
+| [`growth-barriers`](skills/growth-barriers) | Theory of Constraints funnel diagnosis; isolates the ONE binding constraint |
+| [`initiative-prioritizer`](skills/initiative-prioritizer) 🧮 | RICE scoring with a cost-of-delay sequencing overlay |
+| [`market-mapping`](skills/market-mapping) 🧮 | Triangulated TAM/SAM/SOM, flags top-down vs. bottom-up disagreement |
+| [`narrative-builder`](skills/narrative-builder) | Pyramid Principle + Situation-Complication-Resolution restructuring |
+| [`negotiation-prep`](skills/negotiation-prep) 🧮 | Computes the real Zone of Possible Agreement, flags when none exists |
+| [`operating-model-design`](skills/operating-model-design) | RAPID/DACI decision rights, 7S coherence check, capability gaps |
+| [`pricing-strategy`](skills/pricing-strategy) 🧮 | Van Westendorp price sensitivity + elasticity revenue/margin modeling |
+| [`risk-mitigation`](skills/risk-mitigation) 🧮 | Likelihood × impact × velocity risk matrix, flags unmitigated critical risks |
+| [`situation-assessment`](skills/situation-assessment) | Day-1 MECE hypothesis tree and workplan, then three-lens fact triangulation |
+| [`spans-layers-org-design`](skills/spans-layers-org-design) 🧮 | Measures span of control by layer, prices the cost of excess management layers |
+| [`stakeholder-alignment`](skills/stakeholder-alignment) 🧮 | Power-interest grid with coalition math (power, not headcount) |
+| [`strategic-options`](skills/strategic-options) | Forces genuinely distinct options, weighted scoring, real-options staging |
+| [`synergy-case-builder`](skills/synergy-case-builder) 🧮 | M&A synergy NPV with realistic ramp curves and a revenue-synergy confidence haircut |
+| [`unit-economics-health-check`](skills/unit-economics-health-check) 🧮 | LTV:CAC and CAC payback using a realistic churn-decay curve |
+| [`value-realization`](skills/value-realization) | Closes the loop: checks projections from other skills against what actually happened |
+| [`war-gaming`](skills/war-gaming) 🧮 | Decision-tree expected value, flags EV-best vs. maximin-best divergence |
 
 🧮 = ships a bundled Python calculator in `scripts/`
+
+## Skill Categories
+
+### 01 · Problem Definition
+Before anyone touches a solution.
+`situation-assessment` · `growth-barriers` · `assumption-audit` · `full-potential-diagnostic`
+
+### 02 · Market & Competitive Analysis
+Where the value actually sits.
+`market-mapping` · `competitive-intel` · `customer-segmentation` · `unit-economics-health-check`
+
+### 03 · Strategy & Corporate Finance
+Where bets and capital get decided. McKinsey's own practice name.
+`strategic-options` · `pricing-strategy` · `business-case-builder` · `capital-reallocation-review`
+
+### 04 · Performance Transformation
+Turning strategy into delivered results. The other real McKinsey practice name.
+`operating-model-design` · `spans-layers-org-design` · `initiative-prioritizer` · `100-day-plan`
+
+### 05 · Risk & Value Capture
+Before it launches, and after.
+`war-gaming` · `risk-mitigation` · `synergy-case-builder` · `value-realization`
+
+### 06 · Communication & Change
+Making the work survive the meeting.
+`stakeholder-alignment` · `narrative-builder` · `decision-memo` · `negotiation-prep`
 
 ## Calculators
 
@@ -113,23 +120,48 @@ Every calculator was run against a worked test case while this pack was built �
 - `stakeholder-alignment/scripts/power_interest_grid.py` computes coalition math by power, not headcount, and flags when opposition outweighs support
 - `negotiation-prep/scripts/batna_zopa.py` tells you plainly when no Zone of Possible Agreement exists, instead of letting you negotiate on a gap that can't close
 
-## Why this exists
+## Installation
 
-Most "strategy skills for Claude" packs mirror the same six-phase consulting narrative with prose-only prompting frameworks and an identical topic list. This one:
+### Option 1: Claude.ai / Claude Desktop
 
-- Uses McKinsey's actual documented hypothesis-driven method and real practice-area names, not a generic phase-by-phase template
-- Runs situation assessment and hypothesis-tree building as one skill instead of two overlapping ones, hypothesis on day one, facts that test it second
-- Includes topics a typical strategy-skill pack skips entirely: full-potential diagnostics, 100-day plans, M&A synergy cases, spans-and-layers org design, unit economics health checks, and negotiation prep
-- Ships 13 tested Python calculators instead of zero
-- Closes the loop: `value-realization` checks the projections that `business-case-builder`, `full-potential-diagnostic`, and `synergy-case-builder` produce against what actually happened, instead of generating forecasts and walking away from them
+Settings → Skills → Add → Upload a skill → select a skill's `SKILL.md` (or its folder, where supported). Repeat per skill, or upload all 24.
+
+### Option 2: Claude Code — CLI install
+
+```bash
+npx skills add Natan-Mohart/24-strategy-skills-for-claude
+```
+
+Installs into `.claude/skills/` (project) or `~/.claude/skills/` (personal) depending on how you answer the CLI prompt. Claude Code picks up `SKILL.md` files automatically in the next session.
+
+### Option 3: Claude Code — clone and copy
+
+```bash
+git clone https://github.com/Natan-Mohart/24-strategy-skills-for-claude.git
+cp -r 24-strategy-skills-for-claude/skills/* ~/.claude/skills/
+```
+
+### Option 4: Fork and customize
+
+Fork this repo, edit any `SKILL.md` or `scripts/*.py` to fit your own business, then install from your fork using either option above.
 
 ## Skill format
 
 Every `SKILL.md` follows the same structure: **When to use → What it does → Method → Inputs → Output format → Example → Common pitfalls**, grounded in named frameworks (MECE, RAPID/DACI, Theory of Constraints, Van Westendorp, GE-McKinsey, RICE, Jobs-to-be-Done, real options, BATNA/ZOPA, spans and layers) instead of generic "brainstorm some ideas" instructions.
 
+## Why this exists
+
+Most "strategy skills for Claude" packs mirror the same six-phase consulting narrative with prose-only prompting frameworks and an identical topic list. This one:
+
+- Uses McKinsey's actual documented hypothesis-driven method and real practice-area names
+- Runs situation assessment and hypothesis-tree building as one skill instead of two overlapping ones — hypothesis on day one, facts that test it second
+- Includes topics a typical strategy-skill pack skips entirely: full-potential diagnostics, 100-day plans, M&A synergy cases, spans-and-layers org design, unit economics health checks, and negotiation prep
+- Ships 13 tested Python calculators instead of zero
+- Closes the loop: `value-realization` checks the projections that `business-case-builder`, `full-potential-diagnostic`, and `synergy-case-builder` produce against what actually happened
+
 ## Contributing
 
-Found a gap, a bug in a calculator, or a skill that overlaps with another? Open an issue or a PR. Each skill is self-contained (`SKILL.md` + optional `scripts/`), so adding a 25th skill just means copying the structure of the closest existing one.
+Found a gap, a bug in a calculator, or a skill that overlaps with another? See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
